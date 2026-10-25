@@ -1,0 +1,608 @@
+{
+	"info": {
+		"_postman_id": "bencana-dunia-events-api",
+		"name": "Bencana Dunia - Event API",
+		"description": "Koleksi Postman untuk pengujian REST API Manajemen Event Bencana Dunia (Minggu 5 & Minggu 6 - Search, Sort, Pagination)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Events (CRUD - Minggu 5)",
+			"item": [
+				{
+					"name": "1. Get All Events (Index)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							]
+						},
+						"description": "Mengambil semua daftar bencana/event yang tersimpan dalam sistem."
+					},
+					"response": []
+				},
+				{
+					"name": "2. Get Single Event by ID/External ID (Show)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events/{{event_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"{{event_id}}"
+							]
+						},
+						"description": "Menampilkan detail satu event berdasarkan external_id (contoh: event-123 atau EONET_DEV_001) maupun primary key ID angka."
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Event (Store)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"external_id\": \"EVT-IDN-2026-003\",\n    \"title\": \"Gempa Bumi Magnitudo 6.2\",\n    \"category\": \"Earthquakes\",\n    \"country\": \"Indonesia\",\n    \"status\": \"Aktif\",\n    \"event_date\": \"2026-10-15 14:00:00\",\n    \"latitude\": -8.2500,\n    \"longitude\": 115.1000,\n    \"source\": \"BMKG\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							]
+						},
+						"description": "Menambahkan event bencana baru ke database."
+					},
+					"response": []
+				},
+				{
+					"name": "4. Update Event - Full / Partial (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"My Event Update\",\n    \"status\": \"Selesai\",\n    \"category\": \"Earthquakes\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/events/{{event_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"{{event_id}}"
+							]
+						},
+						"description": "Memperbarui event bencana menggunakan method PUT. Mendukung payload format JSON (raw) maupun form-data."
+					},
+					"response": []
+				},
+				{
+					"name": "5. Update Event - Partial (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"My Event Patch Update\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/events/{{event_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"{{event_id}}"
+							]
+						},
+						"description": "Pembaruan parsial event bencana."
+					},
+					"response": []
+				},
+				{
+					"name": "6. Delete Event (Destroy)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events/{{event_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"{{event_id}}"
+							]
+						},
+						"description": "Menghapus event berdasarkan external_id atau ID."
+					},
+					"response": []
+				},
+				{
+					"name": "7. Error Case - Validation Error (422)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							]
+						},
+						"description": "Menguji respon error validasi 422 saat field wajib kosong."
+					},
+					"response": []
+				},
+				{
+					"name": "8. Error Case - Resource Not Found (404)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events/non-existent-id-99999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"non-existent-id-99999"
+							]
+						},
+						"description": "Menguji respon error 404 Not Found ketika ID event tidak ditemukan di database."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events (Minggu 6 - Collection, Search, Sort, Pagination)",
+			"item": [
+				{
+					"name": "Week 6 — Paginated Events (Page 1)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events?per_page=2&page=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "2"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Menguji pagination halaman pertama dengan batas per_page=2."
+					},
+					"response": []
+				},
+				{
+					"name": "Week 6 — Paginated Events (Page 2)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events?per_page=2&page=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "2"
+								},
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Menguji pagination halaman kedua dengan per_page=2."
+					},
+					"response": []
+				},
+				{
+					"name": "Week 6 — Search Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events?search=Badai",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "Badai"
+								}
+							]
+						},
+						"description": "Mencari event berdasarkan keyword (title/category/external_id)."
+					},
+					"response": []
+				},
+				{
+					"name": "Week 6 — Search Events (Empty Result)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events?search=tidak-ada-987654321",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "tidak-ada-987654321"
+								}
+							]
+						},
+						"description": "Pencarian tanpa hasil, harus mengembalikan status 200 OK dengan data kosong."
+					},
+					"response": []
+				},
+				{
+					"name": "Week 6 — Sort Events (Desc)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events?sort=title&direction=desc&per_page=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "title"
+								},
+								{
+									"key": "direction",
+									"value": "desc"
+								},
+								{
+									"key": "per_page",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Mengurutkan event berdasarkan judul dari Z ke A."
+					},
+					"response": []
+				},
+				{
+					"name": "Week 6 — Sort Events (Asc)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events?sort=title&direction=asc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "title"
+								},
+								{
+									"key": "direction",
+									"value": "asc"
+								}
+							]
+						},
+						"description": "Mengurutkan event berdasarkan judul dari A ke Z."
+					},
+					"response": []
+				},
+				{
+					"name": "Week 6 — Invalid Sort (422)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events?sort=password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "password"
+								}
+							]
+						},
+						"description": "Menguji penolakan field sort di luar allowlist dengan error validasi 422."
+					},
+					"response": []
+				},
+				{
+					"name": "Week 6 — Invalid Per Page (422)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events?per_page=100",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "100"
+								}
+							]
+						},
+						"description": "Menguji batas maksimum per_page (> 50) yang harus ditolak dengan error 422."
+					},
+					"response": []
+				},
+				{
+					"name": "Week 6 — Combined Query Parameters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events?search=Event&sort=title&direction=asc&per_page=2&page=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "Event"
+								},
+								{
+									"key": "sort",
+									"value": "title"
+								},
+								{
+									"key": "direction",
+									"value": "asc"
+								},
+								{
+									"key": "per_page",
+									"value": "2"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Kombinasi parameter search, sort, direction, per_page, dan page. Query string dipertahankan pada pagination links."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		},
+		{
+			"key": "event_id",
+			"value": "event-123",
+			"type": "string"
+		}
+	]
+}

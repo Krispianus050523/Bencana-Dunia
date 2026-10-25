@@ -23,4 +23,17 @@ class Event extends Model
         'latitude' => 'float',
         'longitude' => 'float',
     ];
+    public function getRouteKeyName(): string
+    {
+        return 'external_id';
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where('external_id', $value)
+            ->when(is_numeric($value), function ($query) use ($value) {
+                $query->orWhere('id', $value);
+            })
+            ->firstOrFail();
+    }
 }
