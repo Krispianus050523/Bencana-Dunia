@@ -273,10 +273,10 @@
 			]
 		},
 		{
-			"name": "Events (Minggu 6 - Collection, Search, Sort, Pagination)",
+			"name": "Events (Minggu 6 — Collection, Search, Sort, Pagination)",
 			"item": [
 				{
-					"name": "Week 6 — Paginated Events (Page 1)",
+					"name": "M6-01. Default Pagination",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -287,7 +287,32 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/events?per_page=2&page=1",
+							"raw": "{{base_url}}/api/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							]
+						},
+						"description": "Menguji default pagination tanpa query parameter. Expected: per_page=5, page=1, menampilkan 5 item pertama dengan metadata pagination."
+					},
+					"response": []
+				},
+				{
+					"name": "M6-02. Custom Page & Per Page (Page 1)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events?per_page=3&page=1",
 							"host": [
 								"{{base_url}}"
 							],
@@ -298,7 +323,7 @@
 							"query": [
 								{
 									"key": "per_page",
-									"value": "2"
+									"value": "3"
 								},
 								{
 									"key": "page",
@@ -306,12 +331,12 @@
 								}
 							]
 						},
-						"description": "Menguji pagination halaman pertama dengan batas per_page=2."
+						"description": "Menguji custom pagination halaman pertama dengan per_page=3. Expected: 3 item di data, metadata total sesuai jumlah data."
 					},
 					"response": []
 				},
 				{
-					"name": "Week 6 — Paginated Events (Page 2)",
+					"name": "M6-03. Custom Page & Per Page (Page 2)",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -322,7 +347,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/events?per_page=2&page=2",
+							"raw": "{{base_url}}/api/events?per_page=3&page=2",
 							"host": [
 								"{{base_url}}"
 							],
@@ -333,7 +358,7 @@
 							"query": [
 								{
 									"key": "per_page",
-									"value": "2"
+									"value": "3"
 								},
 								{
 									"key": "page",
@@ -341,12 +366,12 @@
 								}
 							]
 						},
-						"description": "Menguji pagination halaman kedua dengan per_page=2."
+						"description": "Menguji pagination halaman kedua. Expected: next batch 3 item, prev link mengarah ke page 1."
 					},
 					"response": []
 				},
 				{
-					"name": "Week 6 — Search Events",
+					"name": "M6-04. Search Field 1 — Title",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -357,7 +382,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/events?search=Badai",
+							"raw": "{{base_url}}/api/events?search=Kebakaran",
 							"host": [
 								"{{base_url}}"
 							],
@@ -368,16 +393,16 @@
 							"query": [
 								{
 									"key": "search",
-									"value": "Badai"
+									"value": "Kebakaran"
 								}
 							]
 						},
-						"description": "Mencari event berdasarkan keyword (title/category/external_id)."
+						"description": "Menguji pencarian pada field pertama (title). Keyword 'Kebakaran' harus mengembalikan event yang memiliki 'Kebakaran' pada title."
 					},
 					"response": []
 				},
 				{
-					"name": "Week 6 — Search Events (Empty Result)",
+					"name": "M6-05. Search Field 2 — Category",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -388,7 +413,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/events?search=tidak-ada-987654321",
+							"raw": "{{base_url}}/api/events?search=Earthquakes",
 							"host": [
 								"{{base_url}}"
 							],
@@ -399,16 +424,16 @@
 							"query": [
 								{
 									"key": "search",
-									"value": "tidak-ada-987654321"
+									"value": "Earthquakes"
 								}
 							]
 						},
-						"description": "Pencarian tanpa hasil, harus mengembalikan status 200 OK dengan data kosong."
+						"description": "Menguji pencarian pada field kedua (category). Keyword 'Earthquakes' harus mengembalikan event dengan category 'Earthquakes', meskipun title tidak mengandung kata tersebut."
 					},
 					"response": []
 				},
 				{
-					"name": "Week 6 — Sort Events (Desc)",
+					"name": "M6-06. Sorting Ascending (title asc)",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -419,7 +444,46 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/events?sort=title&direction=desc&per_page=10",
+							"raw": "{{base_url}}/api/events?sort=title&direction=asc&per_page=12",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"events"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "title"
+								},
+								{
+									"key": "direction",
+									"value": "asc"
+								},
+								{
+									"key": "per_page",
+									"value": "12"
+								}
+							]
+						},
+						"description": "Menguji pengurutan event berdasarkan title ascending (A-Z). Item pertama harus dimulai dari huruf awal alfabet."
+					},
+					"response": []
+				},
+				{
+					"name": "M6-07. Sorting Descending (title desc)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/events?sort=title&direction=desc&per_page=12",
 							"host": [
 								"{{base_url}}"
 							],
@@ -438,16 +502,16 @@
 								},
 								{
 									"key": "per_page",
-									"value": "10"
+									"value": "12"
 								}
 							]
 						},
-						"description": "Mengurutkan event berdasarkan judul dari Z ke A."
+						"description": "Menguji pengurutan event berdasarkan title descending (Z-A). Item pertama harus dimulai dari huruf akhir alfabet."
 					},
 					"response": []
 				},
 				{
-					"name": "Week 6 — Sort Events (Asc)",
+					"name": "M6-08. Kombinasi Pagination + Search + Sorting",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -458,7 +522,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/events?sort=title&direction=asc",
+							"raw": "{{base_url}}/api/events?search=Indonesia&sort=event_date&direction=desc&per_page=2&page=1",
 							"host": [
 								"{{base_url}}"
 							],
@@ -468,21 +532,33 @@
 							],
 							"query": [
 								{
+									"key": "search",
+									"value": "Indonesia"
+								},
+								{
 									"key": "sort",
-									"value": "title"
+									"value": "event_date"
 								},
 								{
 									"key": "direction",
-									"value": "asc"
+									"value": "desc"
+								},
+								{
+									"key": "per_page",
+									"value": "2"
+								},
+								{
+									"key": "page",
+									"value": "1"
 								}
 							]
 						},
-						"description": "Mengurutkan event berdasarkan judul dari A ke Z."
+						"description": "Kombinasi lengkap: search pada country 'Indonesia', sort by event_date descending, per_page=2, page=1. Pagination links harus mempertahankan semua query parameter."
 					},
 					"response": []
 				},
 				{
-					"name": "Week 6 — Invalid Sort (422)",
+					"name": "M6-09. Invalid Sort Field (422)",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -508,12 +584,12 @@
 								}
 							]
 						},
-						"description": "Menguji penolakan field sort di luar allowlist dengan error validasi 422."
+						"description": "Menguji penolakan field sort di luar allowlist. Expected: 422 Unprocessable Content dengan pesan 'The selected sort is invalid.'"
 					},
 					"response": []
 				},
 				{
-					"name": "Week 6 — Invalid Per Page (422)",
+					"name": "M6-10. Invalid Per Page Exceeds Max (422)",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -539,12 +615,12 @@
 								}
 							]
 						},
-						"description": "Menguji batas maksimum per_page (> 50) yang harus ditolak dengan error 422."
+						"description": "Menguji batas maksimum per_page (>50) yang harus ditolak. Expected: 422 Unprocessable Content."
 					},
 					"response": []
 				},
 				{
-					"name": "Week 6 — Combined Query Parameters",
+					"name": "M6-11. Invalid Direction (422)",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -555,7 +631,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/events?search=Event&sort=title&direction=asc&per_page=2&page=1",
+							"raw": "{{base_url}}/api/events?sort=title&direction=random",
 							"host": [
 								"{{base_url}}"
 							],
@@ -565,28 +641,16 @@
 							],
 							"query": [
 								{
-									"key": "search",
-									"value": "Event"
-								},
-								{
 									"key": "sort",
 									"value": "title"
 								},
 								{
 									"key": "direction",
-									"value": "asc"
-								},
-								{
-									"key": "per_page",
-									"value": "2"
-								},
-								{
-									"key": "page",
-									"value": "1"
+									"value": "random"
 								}
 							]
 						},
-						"description": "Kombinasi parameter search, sort, direction, per_page, dan page. Query string dipertahankan pada pagination links."
+						"description": "Menguji direction invalid (bukan asc/desc). Expected: 422 Unprocessable Content."
 					},
 					"response": []
 				}
@@ -601,7 +665,7 @@
 		},
 		{
 			"key": "event_id",
-			"value": "event-123",
+			"value": "EONET_DEV_001",
 			"type": "string"
 		}
 	]
